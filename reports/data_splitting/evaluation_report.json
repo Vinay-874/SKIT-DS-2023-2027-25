@@ -1,0 +1,56 @@
+{
+    "project": "Solar Power Forecasting",
+    "task": "Data Splitting & Evaluation Framework Setup",
+    "timestamp_column": "Timestamp",
+    "target_column": "Target_GHI_NextHour (W/m\u00b2)",
+    "split_method": "Chronological; no random shuffling",
+    "split_ratios": {
+        "train": 0.7,
+        "validation": 0.15,
+        "test": 0.15
+    },
+    "data_leakage_prevention": [
+        "Observations remain in chronological order.",
+        "Training data occurs before validation data.",
+        "Validation data occurs before test data.",
+        "No random train_test_split is used."
+    ],
+    "evaluation_metrics": {
+        "MAE": "Mean Absolute Error: average absolute difference between actual and predicted values.",
+        "RMSE": "Root Mean Squared Error: square root of the average squared prediction error.",
+        "R2": "R-squared: compares model predictions with a mean-based reference."
+    },
+    "model_metrics_status": "Not calculated yet; models must be trained first.",
+    "splits": [
+        {
+            "split": "train",
+            "rows": 700,
+            "start_timestamp": "1998-01-01 00:30:00+00:00",
+            "end_timestamp": "1998-01-15 14:00:00+00:00",
+            "target_mean": 396.5852742228258,
+            "target_std": 193.08779440619554,
+            "target_min": 5.743519465374561,
+            "target_max": 980.5477104327816
+        },
+        {
+            "split": "validation",
+            "rows": 150,
+            "start_timestamp": "1998-01-15 14:30:00+00:00",
+            "end_timestamp": "1998-01-18 17:00:00+00:00",
+            "target_mean": 407.1156910515823,
+            "target_std": 195.86874985641418,
+            "target_min": 2.0240206149589426,
+            "target_max": 934.4447161325464
+        },
+        {
+            "split": "test",
+            "rows": 150,
+            "start_timestamp": "1998-01-18 17:30:00+00:00",
+            "end_timestamp": "1998-01-21 20:00:00+00:00",
+            "target_mean": 405.86342415026826,
+            "target_std": 207.00714301243352,
+            "target_min": 6.6897603875956975,
+            "target_max": 1247.378507697999
+        }
+    ]
+}
