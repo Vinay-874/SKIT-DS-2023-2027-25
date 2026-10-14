@@ -1,26 +1,6 @@
 import numpy as np
 
-
 def create_sequences(X, y, window_size=24):
-    """
-    Create sliding time-series windows.
-
-    Parameters
-    ----------
-    X : array-like
-        Input features ordered by time.
-    y : array-like
-        Target values ordered by time.
-    window_size : int
-        Number of previous time steps used for prediction.
-
-    Returns
-    -------
-    X_seq : numpy.ndarray
-        Sequence input data.
-    y_seq : numpy.ndarray
-        Corresponding target values.
-    """
 
     X = np.asarray(X)
     y = np.asarray(y)
