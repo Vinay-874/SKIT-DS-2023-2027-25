@@ -1,42 +1,70 @@
+
 import pandas as pd
 import numpy as np
-import os
+from pathlib import Path
 
-def prepare_ml_dataset(file_path):
-    print(f"Loading dataset from {file_path}...")
-    df = pd.read_csv(file_path)
-    
-    # Select features and target columns based on your CSV
+# Project ke root folder ka path automatically find karega
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+def prepare_ml_dataset():
+    data_file = PROJECT_ROOT / "data" / "raw" / "nsrdb_raw.csv"
+    output_dir = PROJECT_ROOT / "data" / "processed"
+
+    if not data_file.exists():
+        print(f"Error: Dataset not found at {data_file}")
+        return
+
+    print(f"Loading dataset from {data_file}...")
+    df = pd.read_csv(data_file)
+
     feature_columns = [
-        'GHI (W/m²)', 'DNI (W/m²)', 'DHI (W/m²)', 
-        'Temp (°C)', 'RH (%)', 'Pressure (hPa)', 
-        'Wind Speed (m/s)', 'Solar Zenith Angle (°)'
+        "GHI (W/m²)",
+        "DNI (W/m²)",
+        "DHI (W/m²)",
+        "Temp (°C)",
+        "RH (%)",
+        "Pressure (hPa)",
+        "Wind Speed (m/s)",
+        "Solar Zenith Angle (°)"
     ]
-    target_column = 'Target_GHI_NextHour (W/m²)'
-    
-    # Drop rows with missing values in these columns
+
+    target_column = "Target_GHI_NextHour (W/m²)"
     all_needed = feature_columns + [target_column]
-    df = df.dropna(subset=all_needed)
-    
-    # Extract matrices X and y
-    X = df[feature_columns].values
-    y = df[target_column].values
-    
-    print("Dataset successfully processed and formatted!")
-    print(f"Feature Matrix Shape (X): {X.shape}")
-    print(f"Target Array Shape (y): {y.shape}")
-    
-    # Save processed arrays for baseline ML modeling
-    os.makedirs('data/processed', exist_ok=True)
-    np.save('data/processed/X_train_base.npy', X)
-    np.save('data/processed/y_train_base.npy', y)
-    print("Saved processed matrices to data/processed/ successfully!")
+
+    # Required columns verify karo
+    missing_columns = [col for col in all_needed if col not in df.columns]
+    if missing_columns:
+        print("Error: Required columns missing:", missing_columns)
+        return
+
+    # Required columns ko numeric format mein convert karo
+    for col in all_needed:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    # Missing values wali rows remove karo
+    original_rows = len(df)
+    df = df.dropna(subset=all_needed).copy()
+    print(f"Rows removed: {original_rows - len(df)}")
+
+    if df.empty:
+        print("Error: No valid rows available.")
+        return
+
+    X = df[feature_columns].to_numpy(dtype=float)
+    y = df[target_column].to_numpy(dtype=float)
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    np.save(output_dir / "X_train_base.npy", X)
+    np.save(output_dir / "y_train_base.npy", y)
+
+    # Feature order ko save karo, taaki API same order use kare
+    with open(output_dir / "feature_columns.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(feature_columns))
+
+    print("\nDataset successfully prepared!")
+    print(f"X shape: {X.shape}")
+    print(f"y shape: {y.shape}")
+    print(f"Saved files in: {output_dir}")
 
 if __name__ == "__main__":
-    # Updated with your exact file name
-    data_file = "data/nsrdb_mock_dataset.csv"
-    
-    if os.path.exists(data_file):
-        prepare_ml_dataset(data_file)
-    else:
-        print(f"Error: Could not find '{data_file}'. Make sure the file is inside the data/ folder!")
+    prepare_ml_dataset()
