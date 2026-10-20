@@ -1,0 +1,20 @@
+{
+    "model": "LinearRegression",
+    "target_column": "Target_GHI_NextHour (W/m\u00b2)",
+    "feature_columns": [
+        "Latitude",
+        "Longitude",
+        "GHI (W/m\u00b2)",
+        "DNI (W/m\u00b2)",
+        "DHI (W/m\u00b2)",
+        "Temp (\u00b0C)",
+        "RH (%)",
+        "Pressure (hPa)",
+        "Dew Point (\u00b0C)",
+        "Wind Speed (m/s)",
+        "Solar Zenith Angle (\u00b0)"
+    ],
+    "training_rows": 700,
+    "validation_rows": 150,
+    "test_rows": 150
+}
