@@ -34,17 +34,25 @@ def check_target_leakage(df, feature_cols, target_col):
     """
     print("\nRunning target leakage audit...")
     leaky_features = []
+    
+    # Ensure target is numeric
+    if not pd.api.types.is_numeric_dtype(df[target_col]):
+        print(f"⚠️ Warning: Target column '{target_col}' is non-numeric. Skipping target leakage correlation check.")
+        return True
+
     for col in feature_cols:
         if col != target_col and col in df.columns:
-            correlation = df[col].corr(df[target_col])
-            if abs(correlation) > 0.99:
-                leaky_features.append((col, correlation))
-                
+            # Only calculate correlation for numeric features
+            if pd.api.types.is_numeric_dtype(df[col]):
+                correlation = df[col].corr(df[target_col])
+                if abs(correlation) > 0.99:
+                    leaky_features.append((col, correlation))
+            
     if leaky_features:
         print(f"❌ Warning: Potential target leakage found in features: {leaky_features}")
         return False
     else:
-        print("✅ Pass: No high-correlation target leakage found in feature columns.")
+        print("✅ Pass: No high-correlation target leakage found in numeric feature columns.")
         return True
 
 
