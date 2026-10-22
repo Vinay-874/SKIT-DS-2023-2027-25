@@ -1,0 +1,8 @@
+GHI (W/m²)
+DNI (W/m²)
+DHI (W/m²)
+Temp (°C)
+RH (%)
+Pressure (hPa)
+Wind Speed (m/s)
+Solar Zenith Angle (°)
