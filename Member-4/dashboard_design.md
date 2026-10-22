@@ -1,18 +1,4 @@
-# Dashboard Screen Design
 
-## Project
-
-Solar Power Forecasting Using Machine Learning and Deep Learning
-
-## Sprint
-
-22 August 2026 – 15 September 2026
-
-## Member
-
-Member 4 – Full-Stack & Deployment Engineer
-
----
 
 ## 1. Dashboard Objective
 
