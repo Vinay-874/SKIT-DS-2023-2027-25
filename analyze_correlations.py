@@ -22,6 +22,16 @@ if not os.path.exists(INPUT_PATH):
 print(f"[+] Loading processed dataset from: {INPUT_PATH}")
 df = pd.read_csv(INPUT_PATH)
 
+# Helper function to detect target/GHI column name flexibly
+def get_ghi_column(df_cols):
+    possible_names = ["GHI (W/m²)", "GHI", "Target_GHI_NextHour (W/m²)", "Target_GHI"]
+    for name in possible_names:
+        if name in df_cols:
+            return name
+    return None
+
+target_ghi_col = get_ghi_column(df.columns)
+
 # Select numerical meteorological columns for correlation analysis
 numeric_cols = df.select_dtypes(include=["float64", "int64"]).columns
 numeric_df = df[numeric_cols]
@@ -50,17 +60,19 @@ plt.savefig(heatmap_path, dpi=300)
 plt.close()
 print(f"[+] Saved Pearson correlation heatmap to: {heatmap_path}")
 
-# 5. Display Strongest Predictors for GHI (Solar Output)
-if "GHI (W/m²)" in pearson_corr.columns:
-    ghi_corr = pearson_corr["GHI (W/m²)"].drop("GHI (W/m²)").sort_values(ascending=False)
-    print("\n[+] Feature Correlation relative to Global Horizontal Irradiance (GHI):")
+# 5. Display Strongest Predictors for GHI / Target Variable
+if target_ghi_col and target_ghi_col in pearson_corr.columns:
+    ghi_corr = pearson_corr[target_ghi_col].drop(target_ghi_col).sort_values(ascending=False)
+    print(f"\n[+] Feature Correlation relative to '{target_ghi_col}':")
     for feature, val in ghi_corr.items():
-        print(f"    - {feature:<25}: {val:.4f}")
+        print(f"    - {feature:<30}: {val:.4f}")
+else:
+    print("\n[!] Primary GHI column not found in correlation matrix.")
 
 # 6. Check for Multicollinearity between Predictors
 print("\n[!] Checking for Multicollinearity (|r| >= 0.85 between features):")
 multicollinear_pairs = []
-features = [c for c in numeric_df.columns if c != "GHI (W/m²)"]
+features = [c for c in numeric_df.columns if c != target_ghi_col]
 
 for i in range(len(features)):
     for j in range(i + 1, len(features)):
