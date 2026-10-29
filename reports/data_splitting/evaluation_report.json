@@ -1,0 +1,57 @@
+{
+    "project": "Solar Power Forecasting",
+    "task": "Data Splitting and Evaluation Framework",
+    "dataset_path": "C:\\Users\\kucch\\SKIT-DS-2023-2027-25\\SKIT-DS-2023-2027-25\\data\\processed\\nsrdb_cleaned_base.csv",
+    "timestamp_column": "Timestamp",
+    "target_column": "Target_GHI_NextHour",
+    "split_method": "Chronological splitting without shuffling",
+    "split_ratios": {
+        "training": 0.7,
+        "validation": 0.15,
+        "testing": 0.15
+    },
+    "data_leakage_prevention": [
+        "Data is sorted chronologically.",
+        "Training observations precede validation observations.",
+        "Validation observations precede test observations.",
+        "Data is not randomly shuffled."
+    ],
+    "evaluation_metrics": {
+        "MAE": "Mean Absolute Error",
+        "RMSE": "Root Mean Squared Error",
+        "R2": "Coefficient of Determination"
+    },
+    "model_metrics_status": "Not calculated yet. Model predictions are required.",
+    "splits": [
+        {
+            "split": "training",
+            "rows": 12262,
+            "start_timestamp": "2018-01-01 00:00:00+00:00",
+            "end_timestamp": "2018-09-13 10:30:00+00:00",
+            "target_mean": 229.42717338117762,
+            "target_std": 310.557561325048,
+            "target_min": 0.0,
+            "target_max": 1055.0
+        },
+        {
+            "split": "validation",
+            "rows": 2628,
+            "start_timestamp": "2018-09-13 11:00:00+00:00",
+            "end_timestamp": "2018-11-07 04:30:00+00:00",
+            "target_mean": 220.57686453576864,
+            "target_std": 300.95098065511576,
+            "target_min": 0.0,
+            "target_max": 928.0
+        },
+        {
+            "split": "testing",
+            "rows": 2628,
+            "start_timestamp": "2018-11-07 05:00:00+00:00",
+            "end_timestamp": "2018-12-31 22:30:00+00:00",
+            "target_mean": 176.63470319634703,
+            "target_std": 250.66795222860787,
+            "target_min": 0.0,
+            "target_max": 785.0
+        }
+    ]
+}

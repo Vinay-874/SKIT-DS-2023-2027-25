@@ -1,0 +1,46 @@
+{
+    "target_column": "Target_GHI_NextHour",
+    "time_column": "Timestamp",
+    "feature_columns": [
+        "GHI",
+        "DNI",
+        "DHI",
+        "Temperature",
+        "Humidity",
+        "Pressure",
+        "Wind Speed",
+        "Solar Zenith Angle"
+    ],
+    "feature_source_columns": [
+        "GHI",
+        "DNI",
+        "DHI",
+        "Temperature",
+        "Relative Humidity",
+        "Pressure",
+        "Wind Speed",
+        "Solar Zenith Angle"
+    ],
+    "feature_mapping": {
+        "GHI": "GHI",
+        "DNI": "DNI",
+        "DHI": "DHI",
+        "Temperature": "Temperature",
+        "Humidity": "Relative Humidity",
+        "Pressure": "Pressure",
+        "Wind Speed": "Wind Speed",
+        "Solar Zenith Angle": "Solar Zenith Angle"
+    },
+    "scaling_method": "StandardScaler",
+    "scaler_fit_on": "training_data_only",
+    "imputation_medians": {
+        "GHI": 8.0,
+        "DNI": 0.0,
+        "DHI": 8.0,
+        "Temperature": 27.6,
+        "Humidity": 30.605,
+        "Pressure": 956.0,
+        "Wind Speed": 1.9,
+        "Solar Zenith Angle": 86.685
+    }
+}

@@ -19,7 +19,7 @@ df["Timestamp"] = pd.to_datetime(df["Timestamp"])
 df["Hour"] = df["Timestamp"].dt.hour
 
 # 3. Create Multi-Panel Visualization
-sns.set_theme(style="whitegrid")
+sns.set_theme(style="whitegrid")  
 plt.figure(figsize=(14, 10))
 
 # Subplot 1: Hourly Solar Irradiance (Diurnal Pattern)
